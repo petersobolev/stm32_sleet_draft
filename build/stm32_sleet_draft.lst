@@ -1,0 +1,339 @@
+ARM GAS  C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"stm32_sleet_draft.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.random,"ax",%progbits
+  16              		.align	1
+  17              		.global	random
+  18              		.arch armv7-m
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	random:
+  25              	.LFB72:
+  26              		.file 1 "src/stm32_sleet_draft.c"
+   1:src/stm32_sleet_draft.c **** 
+   2:src/stm32_sleet_draft.c **** // C draft of Sleet intro for STM32 (for asm release see stm32_sleet: https://github.com/petersobol
+   3:src/stm32_sleet_draft.c **** //
+   4:src/stm32_sleet_draft.c **** // take notice that there is least possible chip init code, so I don't recommend it for using as te
+   5:src/stm32_sleet_draft.c **** 
+   6:src/stm32_sleet_draft.c **** #include "stm32l100xc.h"
+   7:src/stm32_sleet_draft.c **** 
+   8:src/stm32_sleet_draft.c **** 
+   9:src/stm32_sleet_draft.c **** uint32_t r_seed = 0;
+  10:src/stm32_sleet_draft.c **** 
+  11:src/stm32_sleet_draft.c **** uint32_t random(void) {
+  27              		.loc 1 11 23 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  12:src/stm32_sleet_draft.c ****   r_seed ^= (r_seed << 4 ); 
+  32              		.loc 1 12 3 view .LVU1
+  33              		.loc 1 12 21 is_stmt 0 view .LVU2
+  34 0000 034B     		ldr	r3, .L2
+  35 0002 1868     		ldr	r0, [r3]
+  36              		.loc 1 12 10 view .LVU3
+  37 0004 80EA0010 		eor	r0, r0, r0, lsl #4
+  13:src/stm32_sleet_draft.c ****   r_seed ^= (r_seed >> 1); 
+  38              		.loc 1 13 3 is_stmt 1 view .LVU4
+  39              		.loc 1 13 10 is_stmt 0 view .LVU5
+  40 0008 80EA5000 		eor	r0, r0, r0, lsr #1
+  41 000c 1860     		str	r0, [r3]
+  14:src/stm32_sleet_draft.c ****   return r_seed;
+  42              		.loc 1 14 3 is_stmt 1 view .LVU6
+  15:src/stm32_sleet_draft.c **** }
+  43              		.loc 1 15 1 is_stmt 0 view .LVU7
+ARM GAS  C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s 			page 2
+
+
+  44 000e 7047     		bx	lr
+  45              	.L3:
+  46              		.align	2
+  47              	.L2:
+  48 0010 00000000 		.word	.LANCHOR0
+  49              		.cfi_endproc
+  50              	.LFE72:
+  52              		.section	.text.main,"ax",%progbits
+  53              		.align	1
+  54              		.global	main
+  55              		.syntax unified
+  56              		.thumb
+  57              		.thumb_func
+  58              		.fpu softvfp
+  60              	main:
+  61              	.LFB73:
+  16:src/stm32_sleet_draft.c **** 
+  17:src/stm32_sleet_draft.c **** int main(void)
+  18:src/stm32_sleet_draft.c **** {
+  62              		.loc 1 18 1 is_stmt 1 view -0
+  63              		.cfi_startproc
+  64              		@ args = 0, pretend = 0, frame = 0
+  65              		@ frame_needed = 0, uses_anonymous_args = 0
+  66 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  67              	.LCFI0:
+  68              		.cfi_def_cfa_offset 24
+  69              		.cfi_offset 4, -24
+  70              		.cfi_offset 5, -20
+  71              		.cfi_offset 6, -16
+  72              		.cfi_offset 7, -12
+  73              		.cfi_offset 8, -8
+  74              		.cfi_offset 14, -4
+  19:src/stm32_sleet_draft.c ****    
+  20:src/stm32_sleet_draft.c ****    //PA5 push-pull
+  21:src/stm32_sleet_draft.c ****    GPIOA->MODER |= GPIO_MODER_MODER5_1;
+  75              		.loc 1 21 4 view .LVU9
+  76              		.loc 1 21 17 is_stmt 0 view .LVU10
+  77 0004 294B     		ldr	r3, .L10
+  78 0006 1A68     		ldr	r2, [r3]
+  79 0008 42F40062 		orr	r2, r2, #2048
+  80 000c 1A60     		str	r2, [r3]
+  22:src/stm32_sleet_draft.c ****    GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR5;
+  81              		.loc 1 22 4 is_stmt 1 view .LVU11
+  82              		.loc 1 22 19 is_stmt 0 view .LVU12
+  83 000e 9A68     		ldr	r2, [r3, #8]
+  84 0010 42F44062 		orr	r2, r2, #3072
+  85 0014 9A60     		str	r2, [r3, #8]
+  23:src/stm32_sleet_draft.c ****    GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR5;
+  86              		.loc 1 23 4 is_stmt 1 view .LVU13
+  87              		.loc 1 23 17 is_stmt 0 view .LVU14
+  88 0016 DA68     		ldr	r2, [r3, #12]
+  89 0018 22F44062 		bic	r2, r2, #3072
+  90 001c DA60     		str	r2, [r3, #12]
+  24:src/stm32_sleet_draft.c **** 
+  25:src/stm32_sleet_draft.c ****    //enable DAC clock
+  26:src/stm32_sleet_draft.c ****    RCC->APB1ENR |= RCC_APB1ENR_DACEN;
+  91              		.loc 1 26 4 is_stmt 1 view .LVU15
+ARM GAS  C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s 			page 3
+
+
+  92              		.loc 1 26 17 is_stmt 0 view .LVU16
+  93 001e 244A     		ldr	r2, .L10+4
+  94 0020 536A     		ldr	r3, [r2, #36]
+  95 0022 43F00053 		orr	r3, r3, #536870912
+  96 0026 5362     		str	r3, [r2, #36]
+  27:src/stm32_sleet_draft.c **** 
+  28:src/stm32_sleet_draft.c ****    //enable DAC1 (PA4 pin)
+  29:src/stm32_sleet_draft.c ****    DAC->CR |= DAC_CR_EN1;  
+  97              		.loc 1 29 4 is_stmt 1 view .LVU17
+  98              		.loc 1 29 12 is_stmt 0 view .LVU18
+  99 0028 224B     		ldr	r3, .L10+8
+ 100 002a 1A68     		ldr	r2, [r3]
+ 101 002c 42F00102 		orr	r2, r2, #1
+ 102 0030 1A60     		str	r2, [r3]
+  30:src/stm32_sleet_draft.c **** 
+  31:src/stm32_sleet_draft.c ****    //enable DAC2 (PA5 pin)
+  32:src/stm32_sleet_draft.c ****    DAC->CR |= DAC_CR_EN2;  
+ 103              		.loc 1 32 4 is_stmt 1 view .LVU19
+ 104              		.loc 1 32 12 is_stmt 0 view .LVU20
+ 105 0032 1A68     		ldr	r2, [r3]
+ 106 0034 42F48032 		orr	r2, r2, #65536
+ 107 0038 1A60     		str	r2, [r3]
+  33:src/stm32_sleet_draft.c **** 
+  34:src/stm32_sleet_draft.c ****    //load 12bit value, right align
+  35:src/stm32_sleet_draft.c ****    //DAC->DHR12R2 = 1000;
+  36:src/stm32_sleet_draft.c **** 
+  37:src/stm32_sleet_draft.c **** // 12bit (0-4096) = 0-3v.
+  38:src/stm32_sleet_draft.c **** 
+  39:src/stm32_sleet_draft.c **** // for 8 bit channel1, at once:  DAC_DHR8RD [bits 7:0] , for 8 bit channel 2: DAC_DHR8RD [bits 15:8
+  40:src/stm32_sleet_draft.c **** // for 8 bit channel1, separately:  DAC_DHR8R1 , for 8 bit channel 2: DAC_DHR8R2
+  41:src/stm32_sleet_draft.c **** // for 12 bit channel1, separately:  DAC->DHR12R1 , for 12 bit channel 2: DAC->DHR12R2
+  42:src/stm32_sleet_draft.c **** // for 12 bit channel1, at once:  DAC_DHR12RD [bits ] , for 12 bit channel 2: DAC_DHR12RD [bits ]
+  43:src/stm32_sleet_draft.c **** 
+  44:src/stm32_sleet_draft.c **** register uint32_t c  = 0;
+ 108              		.loc 1 44 1 is_stmt 1 view .LVU21
+ 109              	.LVL0:
+  45:src/stm32_sleet_draft.c **** register uint32_t d = 0;
+ 110              		.loc 1 45 1 view .LVU22
+ 111              		.loc 1 45 19 is_stmt 0 view .LVU23
+ 112 003a 0025     		movs	r5, #0
+  44:src/stm32_sleet_draft.c **** register uint32_t d = 0;
+ 113              		.loc 1 44 19 view .LVU24
+ 114 003c 2C46     		mov	r4, r5
+ 115 003e 03E0     		b	.L7
+ 116              	.LVL1:
+ 117              	.L9:
+  46:src/stm32_sleet_draft.c **** 
+  47:src/stm32_sleet_draft.c **** while(1) {
+  48:src/stm32_sleet_draft.c ****    for (uint32_t i = 0; i < 4095; i++) {
+  49:src/stm32_sleet_draft.c ****       
+  50:src/stm32_sleet_draft.c ****       DAC->DHR12R1 = random() % c + c*(i/2)+d/6;   // DAC channel X
+  51:src/stm32_sleet_draft.c ****       DAC->DHR12R2 = random() % c - i;    // DAC channel Y
+  52:src/stm32_sleet_draft.c **** 
+  53:src/stm32_sleet_draft.c ****       c++;
+  54:src/stm32_sleet_draft.c ****       c %= 3; 
+  55:src/stm32_sleet_draft.c **** 
+  56:src/stm32_sleet_draft.c ****       d++;
+ARM GAS  C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s 			page 4
+
+
+  57:src/stm32_sleet_draft.c ****       d %= 15000; 
+  58:src/stm32_sleet_draft.c ****   
+  59:src/stm32_sleet_draft.c ****    }
+  60:src/stm32_sleet_draft.c ****    r_seed++;
+ 118              		.loc 1 60 4 is_stmt 1 view .LVU25
+ 119              		.loc 1 60 10 is_stmt 0 view .LVU26
+ 120 0040 1D4A     		ldr	r2, .L10+12
+ 121 0042 1368     		ldr	r3, [r2]
+ 122 0044 0133     		adds	r3, r3, #1
+ 123 0046 1360     		str	r3, [r2]
+ 124              	.LVL2:
+ 125              	.L7:
+  47:src/stm32_sleet_draft.c ****    for (uint32_t i = 0; i < 4095; i++) {
+ 126              		.loc 1 47 1 is_stmt 1 view .LVU27
+  48:src/stm32_sleet_draft.c ****       
+ 127              		.loc 1 48 4 view .LVU28
+ 128              	.LBB2:
+  48:src/stm32_sleet_draft.c ****       
+ 129              		.loc 1 48 9 view .LVU29
+  48:src/stm32_sleet_draft.c ****       
+ 130              		.loc 1 48 18 is_stmt 0 view .LVU30
+ 131 0048 0026     		movs	r6, #0
+ 132              	.LVL3:
+ 133              	.L5:
+  48:src/stm32_sleet_draft.c ****       
+ 134              		.loc 1 48 4 discriminator 1 view .LVU31
+ 135 004a 40F6FE73 		movw	r3, #4094
+ 136 004e 9E42     		cmp	r6, r3
+ 137 0050 F6D8     		bhi	.L9
+  50:src/stm32_sleet_draft.c ****       DAC->DHR12R2 = random() % c - i;    // DAC channel Y
+ 138              		.loc 1 50 7 is_stmt 1 discriminator 3 view .LVU32
+  50:src/stm32_sleet_draft.c ****       DAC->DHR12R2 = random() % c - i;    // DAC channel Y
+ 139              		.loc 1 50 22 is_stmt 0 discriminator 3 view .LVU33
+ 140 0052 FFF7FEFF 		bl	random
+ 141              	.LVL4:
+  50:src/stm32_sleet_draft.c ****       DAC->DHR12R2 = random() % c - i;    // DAC channel Y
+ 142              		.loc 1 50 31 discriminator 3 view .LVU34
+ 143 0056 B0FBF4F3 		udiv	r3, r0, r4
+ 144 005a 04FB1303 		mls	r3, r4, r3, r0
+  50:src/stm32_sleet_draft.c ****       DAC->DHR12R2 = random() % c - i;    // DAC channel Y
+ 145              		.loc 1 50 41 discriminator 3 view .LVU35
+ 146 005e 7008     		lsrs	r0, r6, #1
+  50:src/stm32_sleet_draft.c ****       DAC->DHR12R2 = random() % c - i;    // DAC channel Y
+ 147              		.loc 1 50 35 discriminator 3 view .LVU36
+ 148 0060 04FB0030 		mla	r0, r4, r0, r3
+  50:src/stm32_sleet_draft.c ****       DAC->DHR12R2 = random() % c - i;    // DAC channel Y
+ 149              		.loc 1 50 46 discriminator 3 view .LVU37
+ 150 0064 154F     		ldr	r7, .L10+16
+ 151 0066 A7FB0523 		umull	r2, r3, r7, r5
+  50:src/stm32_sleet_draft.c ****       DAC->DHR12R2 = random() % c - i;    // DAC channel Y
+ 152              		.loc 1 50 44 discriminator 3 view .LVU38
+ 153 006a 00EB9300 		add	r0, r0, r3, lsr #2
+  50:src/stm32_sleet_draft.c ****       DAC->DHR12R2 = random() % c - i;    // DAC channel Y
+ 154              		.loc 1 50 20 discriminator 3 view .LVU39
+ 155 006e DFF84480 		ldr	r8, .L10+8
+ 156 0072 C8F80800 		str	r0, [r8, #8]
+  51:src/stm32_sleet_draft.c **** 
+ARM GAS  C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s 			page 5
+
+
+ 157              		.loc 1 51 7 is_stmt 1 discriminator 3 view .LVU40
+  51:src/stm32_sleet_draft.c **** 
+ 158              		.loc 1 51 22 is_stmt 0 discriminator 3 view .LVU41
+ 159 0076 FFF7FEFF 		bl	random
+ 160              	.LVL5:
+  51:src/stm32_sleet_draft.c **** 
+ 161              		.loc 1 51 31 discriminator 3 view .LVU42
+ 162 007a B0FBF4F3 		udiv	r3, r0, r4
+ 163 007e 04FB1303 		mls	r3, r4, r3, r0
+  51:src/stm32_sleet_draft.c **** 
+ 164              		.loc 1 51 35 discriminator 3 view .LVU43
+ 165 0082 9B1B     		subs	r3, r3, r6
+  51:src/stm32_sleet_draft.c **** 
+ 166              		.loc 1 51 20 discriminator 3 view .LVU44
+ 167 0084 C8F81430 		str	r3, [r8, #20]
+  53:src/stm32_sleet_draft.c ****       c %= 3; 
+ 168              		.loc 1 53 7 is_stmt 1 discriminator 3 view .LVU45
+  53:src/stm32_sleet_draft.c ****       c %= 3; 
+ 169              		.loc 1 53 8 is_stmt 0 discriminator 3 view .LVU46
+ 170 0088 631C     		adds	r3, r4, #1
+ 171              	.LVL6:
+  54:src/stm32_sleet_draft.c **** 
+ 172              		.loc 1 54 7 is_stmt 1 discriminator 3 view .LVU47
+  54:src/stm32_sleet_draft.c **** 
+ 173              		.loc 1 54 9 is_stmt 0 discriminator 3 view .LVU48
+ 174 008a A7FB0324 		umull	r2, r4, r7, r3
+ 175 008e 6408     		lsrs	r4, r4, #1
+ 176 0090 04EB4404 		add	r4, r4, r4, lsl #1
+ 177 0094 1C1B     		subs	r4, r3, r4
+ 178              	.LVL7:
+  56:src/stm32_sleet_draft.c ****       d %= 15000; 
+ 179              		.loc 1 56 7 is_stmt 1 discriminator 3 view .LVU49
+  56:src/stm32_sleet_draft.c ****       d %= 15000; 
+ 180              		.loc 1 56 8 is_stmt 0 discriminator 3 view .LVU50
+ 181 0096 6B1C     		adds	r3, r5, #1
+ 182              	.LVL8:
+  57:src/stm32_sleet_draft.c ****   
+ 183              		.loc 1 57 7 is_stmt 1 discriminator 3 view .LVU51
+  57:src/stm32_sleet_draft.c ****   
+ 184              		.loc 1 57 9 is_stmt 0 discriminator 3 view .LVU52
+ 185 0098 094D     		ldr	r5, .L10+20
+ 186 009a A5FB0325 		umull	r2, r5, r5, r3
+ 187 009e 2D0B     		lsrs	r5, r5, #12
+ 188 00a0 43F69822 		movw	r2, #15000
+ 189 00a4 02FB1535 		mls	r5, r2, r5, r3
+ 190              	.LVL9:
+  48:src/stm32_sleet_draft.c ****       
+ 191              		.loc 1 48 36 discriminator 3 view .LVU53
+ 192 00a8 0136     		adds	r6, r6, #1
+ 193              	.LVL10:
+  48:src/stm32_sleet_draft.c ****       
+ 194              		.loc 1 48 36 discriminator 3 view .LVU54
+ 195 00aa CEE7     		b	.L5
+ 196              	.L11:
+ 197              		.align	2
+ 198              	.L10:
+ 199 00ac 00000240 		.word	1073872896
+ARM GAS  C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s 			page 6
+
+
+ 200 00b0 00380240 		.word	1073887232
+ 201 00b4 00740040 		.word	1073771520
+ 202 00b8 00000000 		.word	.LANCHOR0
+ 203 00bc ABAAAAAA 		.word	-1431655765
+ 204 00c0 73B2E745 		.word	1172812403
+ 205              	.LBE2:
+ 206              		.cfi_endproc
+ 207              	.LFE73:
+ 209              		.global	r_seed
+ 210              		.section	.bss.r_seed,"aw",%nobits
+ 211              		.align	2
+ 212              		.set	.LANCHOR0,. + 0
+ 215              	r_seed:
+ 216 0000 00000000 		.space	4
+ 217              		.text
+ 218              	.Letext0:
+ 219              		.file 2 "c:\\program files\\embeddedgcc\\arm_gcc\\arm-none-eabi\\include\\machine\\_default_types.
+ 220              		.file 3 "c:\\program files\\embeddedgcc\\arm_gcc\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 221              		.file 4 "cmsis/core_cm3.h"
+ 222              		.file 5 "cmsis/system_stm32l1xx.h"
+ 223              		.file 6 "cmsis/stm32l100xc.h"
+ARM GAS  C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32_sleet_draft.c
+C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s:16     .text.random:0000000000000000 $t
+C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s:24     .text.random:0000000000000000 random
+C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s:48     .text.random:0000000000000010 $d
+C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s:53     .text.main:0000000000000000 $t
+C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s:60     .text.main:0000000000000000 main
+C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s:199    .text.main:00000000000000ac $d
+C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s:215    .bss.r_seed:0000000000000000 r_seed
+C:\Users\Petr\AppData\Local\Temp\ccO8yeR4.s:211    .bss.r_seed:0000000000000000 $d
+
+NO UNDEFINED SYMBOLS
